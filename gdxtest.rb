@@ -20,17 +20,19 @@ MOV_SPEED = 5.0
 
 class Game
 	include ApplicationListener
+	
 	def create
 		@tex = Texture.new(Gdx.files.internal("data/test.png"))
 		@sb = SpriteBatch.new
 		@pos = Vector2.new(10.0, 10.0)
 	end
+
 	def dispose
 		@sb.dispose
 		@tex.dispose
 	end
 
-	def processInput
+	def movement
 		if Gdx.input.isKeyPressed(Input::Keys::LEFT)
 			@pos.x -= MOV_SPEED
 		end
@@ -45,11 +47,15 @@ class Game
 		end
 	end
 
-	def render
+	def processInput
 		if Gdx.input.isKeyPressed(Input::Keys::ESCAPE)
 			Gdx.app.exit
 		end
 
+		movement
+	end
+
+	def render
 		processInput
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT)
@@ -58,10 +64,13 @@ class Game
 		@sb.draw(@tex, @pos.x, @pos.y)
 		@sb.end
 	end
+
 	def resize(width, height)
 	end
+
 	def pause
 	end
+
 	def resume
 	end
 end
